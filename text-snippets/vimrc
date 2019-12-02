@@ -1,0 +1,135 @@
+" Use Vim settings, rather than Vi settings (much better!).
+" This must be first, because it changes other options as a side effect.
+set nocompatible
+
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+set mouse=a                     " enable the mouse in the terminal
+set encoding=utf-8              " set character encoding
+
+" Searching
+set showmatch                       " set show matching parens
+set ignorecase                      " ignore case on search
+set smartcase                       " ignore case if searchpattern is all lower case, cas-sensitive otherwise
+set hlsearch                        " highlight search hits
+set incsearch                       " search as you type
+set number                          " always show line numbers
+
+" Tab/Indention
+set tabstop=4                       " a tab is 4 spaces
+set autoindent                      " turn auto indent on
+set copyindent                      " copy previous indentation on autoindent
+set shiftwidth=4                    " number of spaces to use for autoindenting
+set shiftround                      " use multiple of shiftwidth for indenting with '>' and '<'
+set smarttab                        " insert tabs on start of new line according to shiftwidth, not tabstop
+set expandtab
+
+" change the mapleader from \ to ,
+let mapleader=","
+
+" key mappings
+nmap <silent> <leader>/ :nohlsearch<CR>	 	" get rid of prev search highlights
+nmap <silent> <leader>ev	:e $MYVIMRC<CR>		" e .vimrc
+nmap <silent> <leader>sv	:so $MYVIMRC<CR>	" re-source .vimrc
+
+noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+
+
+" Vim Backups
+set nobackup          " do not keep a backup file, use versions instead
+set noswapfile        " do not keep a swap file
+set modeline
+
+" File Types
+set background=dark
+syntax on
+set autoindent
+filetype plugin on
+filetype indent on
+highlight BadWhitespace ctermbg=red guibg=red
+
+
+" C
+au BufRead,BufNewFile *.c,*.h set expandtab
+au BufRead,BufNewFile *.c,*.h set tabstop=4
+au BufRead,BufNewFile *.c,*.h set shiftwidth=4
+au BufRead,BufNewFile *.c,*.h set autoindent
+au BufRead,BufNewFile *.c,*.h match BadWhitespace /^\t\+/
+au BufRead,BufNewFile *.c,*.h match BadWhitespace /\s\+$/
+au         BufNewFile *.c,*.h set fileformat=unix
+au BufRead,BufNewFile *.c,*.h let b:comment_leader = '/* '
+
+" Java
+au BufRead,BufNewFile *.java set expandtab
+au BufRead,BufNewFile *.java set tabstop=4
+au BufRead,BufNewFile *.java set shiftwidth=4
+au BufRead,BufNewFile *.java set autoindent
+au BufRead,BufNewFile *.java match BadWhitespace /^\t\+/
+au BufRead,BufNewFile *.java match BadWhitespace /\s\+$/
+au         BufNewFile *.java set fileformat=unix
+au BufRead,BufNewFile *.java let b:comment_leader = '//'
+
+" Python, PEP-008
+au BufRead,BufNewFile *.py,*.pyw set expandtab
+au BufRead,BufNewFile *.py,*.pyw set textwidth=139
+au BufRead,BufNewFile *.py,*.pyw set tabstop=4
+au BufRead,BufNewFile *.py,*.pyw set softtabstop=4
+au BufRead,BufNewFile *.py,*.pyw set shiftwidth=4
+au BufRead,BufNewFile *.py,*.pyw set autoindent
+au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /\s\+$/
+au         BufNewFile *.py,*.pyw set fileformat=unix
+au BufRead,BufNewFile *.py,*.pyw let b:comment_leader = '#'
+
+" JS
+au BufRead,BufNewFile *.js set expandtab
+au BufRead,BufNewFile *.js set tabstop=2
+au BufRead,BufNewFile *.js set softtabstop=2
+au BufRead,BufNewFile *.js set shiftwidth=2
+au BufRead,BufNewFile *.js set autoindent
+au BufRead,BufNewFile *.js match BadWhitespace /^\t\+/
+au BufRead,BufNewFile *.js match BadWhitespace /\s\+$/
+au         BufNewFile *.js set fileformat=unix
+au BufRead,BufNewFile *.js let b:comment_leader = '//'
+
+" Makefile
+au BufRead,BufNewFile Makefile* set noexpandtab
+
+" XML
+au BufRead,BufNewFile *.xml set expandtab
+au BufRead,BufNewFile *.xml set tabstop=4
+au BufRead,BufNewFile *.xml set softtabstop=4
+au BufRead,BufNewFile *.xml set shiftwidth=4
+au BufRead,BufNewFile *.xml set autoindent
+au BufRead,BufNewFile *.xml match BadWhitespace /^\t\+/
+au BufRead,BufNewFile *.xml match BadWhitespace /\s\+$/
+au         BufNewFile *.xml set fileformat=unix
+au BufRead,BufNewFile *.xml let b:comment_leader = '<!--'
+
+" HTML
+au BufRead,BufNewFile *.html set filetype=xml
+au BufRead,BufNewFile *.html set expandtab
+au BufRead,BufNewFile *.html set tabstop=2
+au BufRead,BufNewFile *.html set softtabstop=2
+au BufRead,BufNewFile *.html set shiftwidth=2
+au BufRead,BufNewFile *.html set autoindent
+au BufRead,BufNewFile *.html match BadWhitespace /^\t\+/
+au BufRead,BufNewFile *.html match BadWhitespace /\s\+$/
+au         BufNewFile *.html set fileformat=unix
+au BufRead,BufNewFile *.html let b:comment_leader = '<!--'
+
+
+" NerdTREE configuration
+let g:nerdtree_tabs_open_on_console_startup = 1	" open nerdtreetabs on console vim startup
+let g:nerdtree_tabs_autoclose = 1				" close current tab if only one and it's nerdtree
+" Ctrl-n to open/close file explorer
+map <C-n> :NERDTreeToggle<CR>	" Ctrl-n to open/close file explorer
+nmap <leader>n :NerdTreeFind<CR>
+
+
+colorscheme slate
+
+" Pathogen
+execute pathogen#infect()
